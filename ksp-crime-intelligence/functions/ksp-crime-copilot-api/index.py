@@ -93,9 +93,6 @@ def ensure_database():
 
 ensure_database()
 
-import sys
-sys.path.insert(0, os.path.join(PROJECT_ROOT, "backend"))
-
 from backend.app import app
 
 import logging

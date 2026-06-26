@@ -1,0 +1,8 @@
+{
+  "name": "ksp-crime-copilot-ui",
+  "displayName": "KSP Crime Intelligence Copilot",
+  "version": "1.0.0",
+  "type": "spa",
+  "homepage": "index.html",
+  "theme": "dark"
+}

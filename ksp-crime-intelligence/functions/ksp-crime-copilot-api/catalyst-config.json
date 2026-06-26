@@ -1,0 +1,18 @@
+{
+  "deployment": {
+    "name": "ksp-crime-copilot-api",
+    "stack": "python_3_12",
+    "type": "advancedio",
+    "function_type": "asgi",
+    "asgi_app_var": "app",
+    "memory": 512,
+    "timeout": 300,
+    "env_variables": {
+      "LLM_MODE": "mock",
+      "DATA_DIR": "/tmp/data"
+    }
+  },
+  "execution": {
+    "main": "index.py"
+  }
+}
