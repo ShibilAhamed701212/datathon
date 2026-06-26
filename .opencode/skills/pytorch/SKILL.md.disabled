@@ -1,0 +1,10 @@
+# PyTorch Development
+
+Build and train neural networks with PyTorch 2.x. Use `torch.compile` for performance, `torch.nn` for model building, `torch.utils.data` for data loading, and `torch.distributed` for distributed training.
+
+## Key Practices
+- Use `nn.Module` for model definitions
+- Use `DataLoader` with `Dataset` for efficient data loading
+- Track experiments with MLflow or TensorBoard
+- Export to TorchScript or ONNX for production
+- Use mixed precision training with `torch.amp`

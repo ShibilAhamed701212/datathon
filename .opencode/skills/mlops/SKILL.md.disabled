@@ -1,0 +1,11 @@
+# MLOps Practices
+
+End-to-end ML lifecycle management. Use MLflow for experiment tracking, model registry, and deployment. Version data and models with DVC. Monitor model performance and drift in production.
+
+## Pipeline
+1. Data ingestion and validation
+2. Feature engineering and storage
+3. Model training and hyperparameter tuning
+4. Model evaluation and validation
+5. Model deployment and serving
+6. Monitoring and retraining

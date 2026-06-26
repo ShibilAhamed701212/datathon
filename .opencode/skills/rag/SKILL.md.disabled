@@ -1,0 +1,11 @@
+# RAG (Retrieval-Augmented Generation)
+
+Build RAG systems with LangChain, LlamaIndex, or custom pipelines. Use vector databases (FAISS, pgvector, Chroma) for retrieval, and local/Ollama models for generation.
+
+## Architecture
+1. Document ingestion and chunking
+2. Embedding generation (sentence-transformers)
+3. Vector storage and indexing
+4. Query processing and retrieval
+5. Context augmentation and generation
+6. Response validation and filtering

@@ -1,0 +1,16 @@
+fir_id,date,crime_type,description,location,district,status
+101,2026-01-10,Theft,Car stolen from parking lot near MG Road. Victim reports vehicle missing at 8 PM.,"MG Road, Bengaluru",Bengaluru Urban,Open
+102,2026-01-12,Burglary,House break-in reported near Mysore Palace. Cash and jewelry stolen.,"Mysore Palace Road, Mysuru",Mysuru,Closed
+103,2026-01-15,Assault,Man attacked on MG Road near Commercial Street. Suspect fled on foot.,"MG Road, Bengaluru",Bengaluru Urban,Open
+104,2026-01-20,Theft,Pickpocketing incident at Banashankari Bus Stand. Mobile phone stolen.,"Banashankari, Bengaluru",Bengaluru Urban,Closed
+105,2026-02-05,Vehicle Theft,Two-wheeler stolen from outside Mall of Mysuru.,"Mall of Mysuru, Mysuru",Mysuru,Open
+106,2026-02-10,Fraud,"Online fraud case. Victim duped of Rs 50,000 via phishing call.","Jayanagar, Bengaluru",Bengaluru Urban,Open
+107,2026-02-18,Burglary,Shop break-in at KR Market. Electronics worth Rs 2 lakh stolen.,"KR Market, Bengaluru",Bengaluru Urban,Open
+108,2026-03-01,Assault,Road rage incident on NH-75 near Tumkur. Both parties injured.,"NH-75, Tumkur",Tumkur,Closed
+109,2026-03-05,Theft,Bicycle theft reported at Vidhana Soudha parking area.,"Vidhana Soudha, Bengaluru",Bengaluru Urban,Open
+110,2026-03-10,Robbery,Bus robbery at Majestic Bus Stand. Cash and phones taken from passengers.,"Majestic, Bengaluru",Bengaluru Urban,Open
+111,2026-03-12,Vehicle Theft,Car stolen from BTM Layout residential area overnight.,"BTM Layout, Bengaluru",Bengaluru Urban,Open
+112,2026-03-15,Fraud,Bank fraud case in Mangaluru. Unauthorized withdrawal of Rs 1 lakh.,Mangaluru,Dakshina Kannada,Open
+113,2026-03-18,Burglary,Flat burglary in Indiranagar. Laptop and watches stolen.,"Indiranagar, Bengaluru",Bengaluru Urban,Closed
+114,2026-03-20,Assault,Chain snatching incident in Hubli. Victim injured during snatching.,Hubli,Dharwad,Open
+115,2026-04-01,Theft,Luggage theft at Yeshwanthpur Railway Station.,"Yeshwanthpur, Bengaluru",Bengaluru Urban,Open

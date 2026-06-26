@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KSP Crime Intelligence Copilot</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cytoscape@3.28.0/dist/cytoscape.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+body { background: #0f172a; color: #e2e8f0; min-height: 100vh; }
+.header { background: linear-gradient(135deg, #1e293b, #334155); padding: 1rem 2rem; display: flex; align-items: center; gap: 1rem; border-bottom: 1px solid #475569; }
+.header h1 { font-size: 1.5rem; color: #facc15; }
+.header span { color: #94a3b8; font-size: 0.9rem; }
+.nav { display: flex; gap: 0; background: #1e293b; border-bottom: 1px solid #334155; }
+.nav button { padding: 0.75rem 1.5rem; border: none; background: transparent; color: #94a3b8; cursor: pointer; font-size: 0.9rem; border-bottom: 2px solid transparent; transition: all 0.2s; }
+.nav button:hover { color: #facc15; background: #334155; }
+.nav button.active { color: #facc15; border-bottom-color: #facc15; background: #1e293b; }
+.tab-content { display: none; padding: 1.5rem; max-width: 1200px; margin: 0 auto; }
+.tab-content.active { display: block; }
+.card { background: #1e293b; border-radius: 0.75rem; padding: 1.25rem; margin-bottom: 1rem; border: 1px solid #334155; }
+.card h3 { color: #facc15; margin-bottom: 0.75rem; font-size: 1.1rem; }
+.chat-messages { height: 400px; overflow-y: auto; padding: 1rem; border: 1px solid #334155; border-radius: 0.5rem; margin-bottom: 1rem; background: #0f172a; }
+.message { margin-bottom: 1rem; padding: 0.75rem; border-radius: 0.5rem; max-width: 85%; }
+.message.user { background: #3b82f6; margin-left: auto; }
+.message.assistant { background: #1e293b; border: 1px solid #334155; }
+.message .sources { font-size: 0.75rem; color: #94a3b8; margin-top: 0.25rem; }
+.chat-input { display: flex; gap: 0.5rem; }
+.chat-input input { flex: 1; padding: 0.75rem; border-radius: 0.5rem; border: 1px solid #475569; background: #0f172a; color: #e2e8f0; font-size: 0.9rem; }
+.chat-input input:focus { outline: none; border-color: #facc15; }
+.chat-input button, .btn { padding: 0.75rem 1.25rem; border: none; border-radius: 0.5rem; background: #facc15; color: #0f172a; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
+.chat-input button:hover, .btn:hover { opacity: 0.9; }
+.chat-input button:disabled { opacity: 0.5; cursor: not-allowed; }
+select { padding: 0.75rem; border-radius: 0.5rem; border: 1px solid #475569; background: #0f172a; color: #e2e8f0; font-size: 0.9rem; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.stat-card { background: #334155; padding: 1rem; border-radius: 0.5rem; text-align: center; }
+.stat-card .value { font-size: 2rem; font-weight: 700; color: #facc15; }
+.stat-card .label { font-size: 0.8rem; color: #94a3b8; margin-top: 0.25rem; }
+.charts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1rem; }
+.chart-container { position: relative; height: 250px; }
+#graph-container { height: 500px; background: #0f172a; border-radius: 0.5rem; }
+input[type="number"] { padding: 0.75rem; border-radius: 0.5rem; border: 1px solid #475569; background: #0f172a; color: #e2e8f0; font-size: 0.9rem; width: 120px; }
+.fir-detail { padding: 1rem; }
+.fir-detail p { margin-bottom: 0.5rem; }
+.fir-detail strong { color: #facc15; }
+.loading { opacity: 0.6; pointer-events: none; }
+.api-base { color: #94a3b8; font-size: 0.8rem; text-align: center; padding: 1rem; border-top: 1px solid #334155; }
+.error-msg { color: #ef4444; padding: 0.5rem; }
+.ba-lang { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem; }
+.ba-lang label { font-size: 0.85rem; color: #94a3b8; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🛡️ KSP Crime Copilot</h1>
+  <span>| Karnataka State Police — Intelligence Prototype</span>
+</div>
+
+<div class="nav">
+  <button class="active" onclick="switchTab('chat')">💬 Chat</button>
+  <button onclick="switchTab('analytics')">📊 Analytics</button>
+  <button onclick="switchTab('graph')">🔗 Network Graph</button>
+  <button onclick="switchTab('summary')">📄 Case Summary</button>
+</div>
+
+<div id="tab-chat" class="tab-content active">
+  <div class="card">
+    <h3>Ask about crime data</h3>
+    <div class="ba-lang">
+      <label>Language:</label>
+      <select id="lang-select" onchange="updateLang()">
+        <option value="en">English</option>
+        <option value="kn">ಕನ್ನಡ</option>
+      </select>
+      <label style="margin-left:1rem">LLM Mode:</label>
+      <select id="llm-select">
+        <option value="mock">Mock</option>
+        <option value="openai">OpenAI</option>
+        <option value="gemini">Gemini</option>
+      </select>
+    </div>
+    <div id="chat-messages" class="chat-messages">
+      <div class="message assistant">Hello! I'm your KSP Crime Intelligence Copilot. Ask me about crime data in English or Kannada.</div>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="chat-input" placeholder="e.g., theft cases in Bengaluru..." onkeydown="if(event.key==='Enter') sendMessage()">
+      <button id="chat-send" onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+</div>
+
+<div id="tab-analytics" class="tab-content">
+  <div class="stats-grid" id="stats-grid">
+    <div class="stat-card"><div class="value" id="stat-total">—</div><div class="label">Total FIRs</div></div>
+    <div class="stat-card"><div class="value" id="stat-top-crime">—</div><div class="label">Top Crime</div></div>
+    <div class="stat-card"><div class="value" id="stat-top-district">—</div><div class="label">Top District</div></div>
+    <div class="stat-card"><div class="value" id="stat-offenders">—</div><div class="label">Repeat Offenders</div></div>
+  </div>
+  <div class="charts-grid">
+    <div class="card"><h3>Crimes by Type</h3><div class="chart-container"><canvas id="chart-type"></canvas></div></div>
+    <div class="card"><h3>Crimes by District</h3><div class="chart-container"><canvas id="chart-district"></canvas></div></div>
+    <div class="card"><h3>Monthly Trend</h3><div class="chart-container"><canvas id="chart-month"></canvas></div></div>
+    <div class="card"><h3>Repeat Offenders</h3><div id="offender-table"></div></div>
+  </div>
+</div>
+
+<div id="tab-graph" class="tab-content">
+  <div class="card">
+    <h3>Criminal Network Graph</h3>
+    <div style="margin-bottom:0.75rem">
+      <input type="text" id="graph-filter" placeholder="Filter by person name..." style="padding:0.5rem;border-radius:0.5rem;border:1px solid #475569;background:#0f172a;color:#e2e8f0;width:300px">
+      <button class="btn" onclick="loadGraph()" style="margin-left:0.5rem">Refresh</button>
+    </div>
+    <div id="graph-container"></div>
+  </div>
+</div>
+
+<div id="tab-summary" class="tab-content">
+  <div class="card">
+    <h3>Case Summary Generator</h3>
+    <p style="color:#94a3b8;margin-bottom:0.75rem">Enter an FIR ID (101-115) to generate a detailed case summary.</p>
+    <div style="display:flex;gap:0.5rem;align-items:center">
+      <label>FIR ID:</label>
+      <input type="number" id="fir-id" value="101" min="101" max="115">
+      <button class="btn" onclick="loadFirDetail()">Generate Summary</button>
+    </div>
+    <div id="fir-detail" style="margin-top:1rem"></div>
+  </div>
+</div>
+
+<div class="api-base">API: <span id="api-url"></span></div>
+
+<script>
+const API = window.location.origin + '/api';
+document.getElementById('api-url').textContent = API;
+
+let charts = {};
+
+function switchTab(name) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  document.querySelector(`.nav button[onclick*="'${name}'"]`).classList.add('active');
+  if (name === 'analytics') loadStats();
+  if (name === 'graph') loadGraph();
+}
+
+function updateLang() {
+  const lang = document.getElementById('lang-select').value;
+  document.getElementById('chat-input').placeholder = lang === 'en' ? 'e.g., theft cases in Bengaluru...' : 'ಉದಾ: ಬೆಂಗಳೂರಿನಲ್ಲಿ ಕಳ್ಳತನ ಪ್ರಕರಣಗಳು...';
+}
+
+async function sendMessage() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  const container = document.getElementById('chat-messages');
+  container.innerHTML += `<div class="message user">${escapeHtml(msg)}</div>`;
+  container.scrollTop = container.scrollHeight;
+  document.getElementById('chat-send').disabled = true;
+  container.innerHTML += `<div class="message assistant" id="loading-msg"><em>Analyzing...</em></div>`;
+  try {
+    const resp = await fetch(API + '/query', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        question: msg,
+        lang: document.getElementById('lang-select').value,
+        llm_mode: document.getElementById('llm-select').value
+      })
+    });
+    const data = await resp.json();
+    document.getElementById('loading-msg').outerHTML = `<div class="message assistant">${escapeHtml(data.answer || 'No response')}${data.source_ids?.length ? `<div class="sources">Sources: FIR #${data.source_ids.join(', #')}</div>` : ''}</div>`;
+  } catch(e) {
+    document.getElementById('loading-msg').outerHTML = `<div class="message assistant error-msg">Error: ${escapeHtml(e.message)}</div>`;
+  }
+  document.getElementById('chat-send').disabled = false;
+  container.scrollTop = container.scrollHeight;
+}
+
+async function loadStats() {
+  try {
+    const resp = await fetch(API + '/stats');
+    const data = await resp.json();
+    if (data.error) { document.getElementById('stats-grid').innerHTML = `<div class="error-msg">${data.error}</div>`; return; }
+    const total = data.crimes_by_type?.reduce((s, c) => s + c.count, 0) || 0;
+    const topCrime = data.crimes_by_type?.[0];
+    const topDist = data.crimes_by_district?.[0];
+    document.getElementById('stat-total').textContent = total;
+    document.getElementById('stat-top-crime').textContent = topCrime ? `${topCrime.crime_type} (${topCrime.count})` : '—';
+    document.getElementById('stat-top-district').textContent = topDist ? `${topDist.district} (${topDist.count})` : '—';
+    document.getElementById('stat-offenders').textContent = data.repeat_offenders?.length || 0;
+    renderChart('chart-type', data.crimes_by_type?.map(c => c.crime_type) || [], data.crimes_by_type?.map(c => c.count) || [], 'bar', '#facc15');
+    renderChart('chart-district', data.crimes_by_district?.map(d => d.district) || [], data.crimes_by_district?.map(d => d.count) || [], 'bar', '#3b82f6');
+    renderChart('chart-month', data.crimes_by_month?.map(m => m.month) || [], data.crimes_by_month?.map(m => m.count) || [], 'line', '#22c55e');
+    if (data.repeat_offenders?.length) {
+      let html = '<table style="width:100%;border-collapse:collapse;font-size:0.85rem">';
+      html += '<tr style="border-bottom:1px solid #475569"><th style="padding:0.5rem;text-align:left">Name</th><th style="padding:0.5rem;text-align:left">Cases</th><th style="padding:0.5rem;text-align:left">Age</th><th style="padding:0.5rem;text-align:left">District</th></tr>';
+      data.repeat_offenders.forEach(o => {
+        html += `<tr><td style="padding:0.25rem 0.5rem">${escapeHtml(o.name)}</td><td style="padding:0.25rem 0.5rem">${o.fir_count}</td><td style="padding:0.25rem 0.5rem">${o.age}</td><td style="padding:0.25rem 0.5rem">${escapeHtml(o.address?.split(',').pop()?.trim() || '')}</td></tr>`;
+      });
+      html += '</table>';
+      document.getElementById('offender-table').innerHTML = html;
+    }
+  } catch(e) {
+    document.getElementById('stats-grid').innerHTML = `<div class="error-msg">Error loading stats: ${escapeHtml(e.message)}</div>`;
+  }
+}
+
+function renderChart(id, labels, values, type, color) {
+  if (charts[id]) charts[id].destroy();
+  const ctx = document.getElementById(id).getContext('2d');
+  charts[id] = new Chart(ctx, {
+    type,
+    data: { labels, datasets: [{ data: values, backgroundColor: color + '80', borderColor: color, borderWidth: 2, fill: type === 'line' }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8' }, beginAtZero: true } }
+    }
+  });
+}
+
+async function loadGraph() {
+  const container = document.getElementById('graph-container');
+  const filter = document.getElementById('graph-filter').value;
+  container.innerHTML = '<p style="color:#94a3b8;padding:1rem">Loading graph...</p>';
+  try {
+    const url = filter ? API + '/graph?person=' + encodeURIComponent(filter) : API + '/graph';
+    const resp = await fetch(url);
+    const data = await resp.json();
+    if (data.error) { container.innerHTML = `<p class="error-msg">${data.error}</p>`; return; }
+    if (!data.nodes?.length) { container.innerHTML = '<p style="color:#94a3b8;padding:1rem">No graph data available.</p>'; return; }
+    container.innerHTML = '';
+    container.style.height = '500px';
+    const cy = cytoscape({
+      container,
+      elements: [
+        ...data.nodes.map(n => ({ data: { id: n.id, label: n.label || n.id, type: n.type } })),
+        ...(data.edges || []).map((e, i) => ({ data: { id: 'e' + i, source: e.source, target: e.target, label: e.role || '' } }))
+      ],
+      style: [
+        { selector: 'node[type="fir"]', style: { 'background-color': '#facc15', label: 'data(label)', color: '#e2e8f0', 'text-valign': 'bottom', 'font-size': '10px' } },
+        { selector: 'node[type="person"]', style: { 'background-color': '#3b82f6', label: 'data(label)', color: '#e2e8f0', 'text-valign': 'bottom', 'font-size': '10px' } },
+        { selector: 'edge', style: { width: 1, 'line-color': '#475569', 'curve-style': 'bezier', label: 'data(label)', color: '#94a3b8', 'font-size': '8px' } }
+      ],
+      layout: { name: 'cose', animate: false, padding: 30 }
+    });
+  } catch(e) {
+    container.innerHTML = `<p class="error-msg">Error: ${escapeHtml(e.message)}</p>`;
+  }
+}
+
+async function loadFirDetail() {
+  const firId = document.getElementById('fir-id').value;
+  const container = document.getElementById('fir-detail');
+  container.innerHTML = '<p style="color:#94a3b8">Loading...</p>';
+  try {
+    const resp = await fetch(API + '/firs/' + firId);
+    const data = await resp.json();
+    if (data.detail) { container.innerHTML = `<p class="error-msg">${escapeHtml(data.detail)}</p>`; return; }
+    const f = data.fir;
+    let html = `<div class="card"><h3>FIR #${f.fir_id}</h3><div class="fir-detail">`;
+    html += `<p><strong>Date:</strong> ${f.date}</p>`;
+    html += `<p><strong>Crime Type:</strong> ${f.crime_type}</p>`;
+    html += `<p><strong>Location:</strong> ${f.location}</p>`;
+    html += `<p><strong>District:</strong> ${f.district}</p>`;
+    html += `<p><strong>Status:</strong> ${f.status}</p>`;
+    html += `<p><strong>Description:</strong> ${f.description}</p>`;
+    if (data.persons?.length) {
+      html += `<h4 style="color:#facc15;margin-top:1rem">Involved Persons</h4><table style="width:100%;border-collapse:collapse;font-size:0.85rem;margin-top:0.5rem">`;
+      html += '<tr style="border-bottom:1px solid #475569"><th style="padding:0.5rem;text-align:left">Name</th><th style="padding:0.5rem;text-align:left">Role</th><th style="padding:0.5rem;text-align:left">Age</th></tr>';
+      data.persons.forEach(p => {
+        html += `<tr><td style="padding:0.25rem 0.5rem">${escapeHtml(p.person_name)}</td><td style="padding:0.25rem 0.5rem">${escapeHtml(p.role)}</td><td style="padding:0.25rem 0.5rem">${p.age || ''}</td></tr>`;
+      });
+      html += '</table>';
+    }
+    html += '<div style="margin-top:1rem"><button class="btn" onclick="downloadPdf(' + firId + ')">📄 Download PDF Summary</button></div>';
+    html += '</div></div>';
+    container.innerHTML = html;
+  } catch(e) {
+    container.innerHTML = `<p class="error-msg">Error: ${escapeHtml(e.message)}</p>`;
+  }
+}
+
+async function downloadPdf(firId) {
+  try {
+    const resp = await fetch(API + '/pdf_summary', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({fir_id: firId})
+    });
+    if (!resp.ok) { alert('PDF generation failed'); return; }
+    const blob = await resp.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `FIR_${firId}_summary.pdf`;
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+  } catch(e) {
+    alert('Error: ' + e.message);
+  }
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+</script>
+</body>
+</html>

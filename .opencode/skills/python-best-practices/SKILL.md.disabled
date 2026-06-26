@@ -1,0 +1,10 @@
+# Python Best Practices
+
+Follow PEP 8, use type hints, write docstrings, prefer async/await for I/O, use dataclasses for data containers, pathlib for paths, and pytest for testing.
+
+## Key Libraries
+- **FastAPI** for APIs (over Flask for new projects)
+- **SQLAlchemy + Alembic** for databases
+- **Pydantic** for data validation
+- **uv** for package management
+- **ruff** for linting, **black** for formatting

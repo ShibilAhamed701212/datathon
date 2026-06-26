@@ -1,0 +1,21 @@
+person_id,name,role,age,gender,address,district
+1,Ravi Kumar,Victim,45,Male,"MG Road, Bengaluru",Bengaluru Urban
+2,Aisha Khan,Accused,30,Female,Mysuru City,Mysuru
+3,Manjunath Gowda,Victim,50,Male,"Banashankari, Bengaluru",Bengaluru Urban
+4,Suresh Reddy,Accused,25,Male,"Koramangala, Bengaluru",Bengaluru Urban
+5,Lakshmi Devi,Victim,35,Female,"Jayanagar, Bengaluru",Bengaluru Urban
+6,Venkatesh Rao,Accused,42,Male,"Malleshwaram, Bengaluru",Bengaluru Urban
+7,Priya Sharma,Victim,28,Female,"Indiranagar, Bengaluru",Bengaluru Urban
+8,Ahmed Hussain,Accused,38,Male,"Majestic, Bengaluru",Bengaluru Urban
+9,Kiran P,Witness,33,Male,"BTM Layout, Bengaluru",Bengaluru Urban
+10,Sunita Patil,Victim,55,Female,Hubli,Dharwad
+11,Ramesh Shetty,Accused,29,Male,Mangaluru,Dakshina Kannada
+12,Anitha K,Victim,40,Female,Tumkur,Tumkur
+13,Deepak Jain,Victim,32,Male,"KR Market, Bengaluru",Bengaluru Urban
+14,Mohan Das,Witness,60,Male,Mysuru City,Mysuru
+15,Kavitha N,Victim,27,Female,"Vidhana Soudha, Bengaluru",Bengaluru Urban
+16,Siddharth M,Accused,35,Male,"Yeshwanthpur, Bengaluru",Bengaluru Urban
+17,Geetha R,Victim,48,Female,"BTM Layout, Bengaluru",Bengaluru Urban
+18,Prakash B,Accused,22,Male,Mysuru City,Mysuru
+19,Naveen Kumar,Victim,31,Male,Hubli,Dharwad
+20,Shweta M,Witness,26,Female,"Indiranagar, Bengaluru",Bengaluru Urban

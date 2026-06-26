@@ -1,0 +1,26 @@
+{
+  "project": {
+    "name": "ksp-crime-copilot",
+    "version": "1.0.0",
+    "type": "advanced_io"
+  },
+  "functions": [
+    {
+      "name": "ksp-crime-copilot-api",
+      "type": "advanced_io",
+      "runtime": "python3.11",
+      "path": "functions/api",
+      "function_type": "asgi",
+      "memory": 512,
+      "timeout": 300,
+      "env_variables": {
+        "LLM_MODE": "mock",
+        "DATA_DIR": "/var/catalyst/data"
+      }
+    }
+  ],
+  "client": {
+    "path": "frontend/static",
+    "type": "spa"
+  }
+}

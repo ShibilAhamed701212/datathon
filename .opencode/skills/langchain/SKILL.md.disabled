@@ -1,0 +1,10 @@
+# LangChain Development
+
+Build LLM-powered applications with LangChain. Use chains for structured workflows, agents for autonomous tasks, and RAG for knowledge-augmented generation.
+
+## Components
+- **Models**: Local (Ollama), OpenAI, Anthropic
+- **Chains**: Sequential, parallel, conditional
+- **Agents**: ReAct, OpenAI functions, custom
+- **Retrievers**: Vector stores, document compressors
+- **Memory**: Conversation buffer, summary, vector

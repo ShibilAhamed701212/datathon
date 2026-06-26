@@ -1,0 +1,10 @@
+# AWS Development
+
+Build and deploy on AWS. Use boto3 for Python SDK, CDK or Terraform for infrastructure, and follow AWS Well-Architected Framework.
+
+## Services
+- **Compute**: Lambda, ECS, EKS, EC2
+- **Storage**: S3, EBS, EFS
+- **Database**: RDS, DynamoDB, Aurora
+- **AI/ML**: SageMaker, Bedrock, Rekognition
+- **Infrastructure**: VPC, IAM, CloudFormation

@@ -1,0 +1,11 @@
+# FastAPI Development
+
+Build high-performance APIs with FastAPI. Use Pydantic models for request/response validation, dependency injection for shared logic, and async handlers for I/O-bound endpoints.
+
+## Structure
+- `app/` - application package
+  - `api/` - route handlers
+  - `models/` - database models
+  - `schemas/` - Pydantic schemas
+  - `services/` - business logic
+  - `core/` - config, dependencies, middleware

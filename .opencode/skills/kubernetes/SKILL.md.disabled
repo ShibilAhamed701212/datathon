@@ -1,0 +1,3 @@
+# Kubernetes Development
+
+Deploy and manage containerized applications on Kubernetes. Use Deployments, Services, ConfigMaps, Secrets, and Ingress resources. Follow 12-factor app principles.

@@ -1,0 +1,12 @@
+# Pytest Testing
+
+Write comprehensive tests with pytest. Use fixtures for setup, parametrization for multiple cases, and markers for categorization.
+
+## Patterns
+- `test_<function>_<scenario>_<expected>` for test names
+- `conftest.py` for shared fixtures
+- `pytest-cov` for coverage reporting
+- `pytest-asyncio` for async tests
+- `pytest-xdist` for parallel execution
+- Use `tmp_path` fixture for temp files
+- Mock external services with `monkeypatch` or `unittest.mock`

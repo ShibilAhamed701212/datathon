@@ -1,0 +1,15 @@
+{
+  "appsail": {
+    "name": "ksp-crime-copilot",
+    "display_name": "KSP Crime Intelligence Copilot",
+    "port": 8000,
+    "memory": 1024,
+    "cpu": 0.5,
+    "min_instances": 1,
+    "max_instances": 1,
+    "health_check_path": "/api/health",
+    "env_variables": {
+      "LLM_MODE": "mock"
+    }
+  }
+}

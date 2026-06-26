@@ -1,0 +1,3 @@
+# Flask Development
+
+Build web applications with Flask. Use blueprints for modularity, Flask-SQLAlchemy for databases, Flask-Login for auth, and Flask-Migrate for migrations.

@@ -1,0 +1,171 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "lsp": {
+    "typescript": {
+      "command": ["typescript-language-server", "--stdio"],
+      "extensions": [".ts", ".tsx", ".js", ".jsx"]
+    },
+    "basedpyright": {
+      "command": ["basedpyright-langserver", "--stdio"],
+      "extensions": [".py"]
+    },
+    "json": {
+      "command": ["vscode-json-language-server", "--stdio"],
+      "extensions": [".json", ".jsonc"]
+    },
+    "yaml": {
+      "command": ["yaml-language-server", "--stdio"],
+      "extensions": [".yaml", ".yml"]
+    },
+    "markdown": {
+      "command": ["vscode-markdown-language-server", "--stdio"],
+      "extensions": [".md"]
+    },
+    "bash": {
+      "command": ["bash-language-server", "start"],
+      "extensions": [".sh", ".bash"]
+    },
+    "dockerfile": {
+      "command": ["docker-langserver", "--stdio"],
+      "extensions": ["Dockerfile"]
+    }
+  },
+  "mcp": {
+    "filesystem": {
+      "type": "local",
+      "command": ["node", "D:\\software\\npm-global\\node_modules\\@modelcontextprotocol\\server-filesystem\\dist\\index.js", "D:\\var-codes"],
+      "enabled": true
+    },
+    "github": {
+      "type": "local",
+      "command": ["node", "D:\\software\\npm-global\\node_modules\\@beautyfree\\modelcontextprotocol-server-github\\dist\\index.js"],
+      "enabled": true
+    },
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "-y", "@playwright/mcp"],
+      "enabled": true
+    },
+    "docker": {
+      "type": "local",
+      "command": ["node", "D:\\software\\npm-global\\node_modules\\mcp-server-docker\\dist\\index.js"],
+      "enabled": true
+    },
+    "memory": {
+      "type": "local",
+      "command": ["node", "D:\\software\\npm-global\\node_modules\\@modelcontextprotocol\\server-memory\\dist\\index.js"],
+      "enabled": true
+    },
+    "sequential-thinking": {
+      "type": "local",
+      "command": ["node", "D:\\software\\npm-global\\node_modules\\@modelcontextprotocol\\server-sequential-thinking\\dist\\index.js"],
+      "enabled": true
+    }
+  },
+  "command": {
+    "plan": {
+      "template": "Create a detailed implementation plan for: {{input}}",
+      "description": "Strategic planning with architecture design",
+      "agent": "planner",
+      "subtask": false
+    },
+    "analyze": {
+      "template": "Analyze the codebase to understand: {{input}}",
+      "description": "Deep codebase analysis",
+      "subtask": true
+    },
+    "implement": {
+      "template": "Implement the following: {{input}}",
+      "description": "Implement a feature or component",
+      "agent": "backend",
+      "subtask": false
+    },
+    "review": {
+      "template": "Review the code for: {{input}}",
+      "description": "Comprehensive code review",
+      "agent": "code-reviewer",
+      "subtask": false
+    },
+    "refactor": {
+      "template": "Refactor the code to improve: {{input}}",
+      "description": "Code refactoring and improvement",
+      "agent": "code-reviewer",
+      "subtask": false
+    },
+    "document": {
+      "template": "Create documentation for: {{input}}",
+      "description": "Generate technical documentation",
+      "agent": "documentation",
+      "subtask": false
+    },
+    "test": {
+      "template": "Write tests for: {{input}}",
+      "description": "Write comprehensive tests",
+      "agent": "backend",
+      "subtask": false
+    },
+    "debug": {
+      "template": "Debug the following issue: {{input}}",
+      "description": "Debug issues and fix bugs",
+      "subtask": false
+    },
+    "optimize": {
+      "template": "Optimize the performance of: {{input}}",
+      "description": "Performance optimization",
+      "agent": "performance",
+      "subtask": false
+    },
+    "security": {
+      "template": "Audit the security of: {{input}}",
+      "description": "Security audit and vulnerability assessment",
+      "agent": "security",
+      "subtask": false
+    },
+    "benchmark": {
+      "template": "Create benchmarks for: {{input}}",
+      "description": "Performance benchmarking and profiling",
+      "agent": "performance",
+      "subtask": false
+    },
+    "explain": {
+      "template": "Explain how {{input}} works in detail",
+      "description": "Explain code or concepts",
+      "agent": "research",
+      "subtask": false
+    },
+    "architecture": {
+      "template": "Design the architecture for: {{input}}",
+      "description": "System architecture design",
+      "agent": "architect",
+      "subtask": false
+    },
+    "deploy": {
+      "template": "Create deployment configuration for: {{input}}",
+      "description": "Deployment and infrastructure setup",
+      "agent": "devops",
+      "subtask": false
+    }
+  },
+  "experimental": {
+    "batch_tool": true,
+    "continue_loop_on_deny": true
+  },
+  "instructions": [
+    "AGENTS.md",
+    ".opencode/rules/coding.md",
+    ".opencode/rules/architecture.md",
+    ".opencode/rules/security.md",
+    ".opencode/rules/testing.md"
+  ],
+  "formatter": {
+    "python": {
+      "command": ["black", "-"]
+    },
+    "typescript": {
+      "command": ["prettier", "--parser", "typescript"]
+    },
+    "json": {
+      "command": ["prettier", "--parser", "json"]
+    }
+  }
+}

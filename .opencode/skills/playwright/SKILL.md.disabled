@@ -1,0 +1,11 @@
+# Playwright E2E Testing
+
+End-to-end testing with Playwright. Write reliable browser tests for web applications.
+
+## Patterns
+- Use Page Object Model for reusable page interactions
+- Test critical user flows (login, registration, checkout)
+- Use `test.describe` for grouping related tests
+- Use `test.use` for fixture configuration
+- Run in CI with `playwright install --with-deps`
+- Use trace viewer for debugging failures

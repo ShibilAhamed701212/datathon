@@ -1,0 +1,10 @@
+# Docker & Containerization
+
+Build efficient, secure Docker images. Use multi-stage builds, minimize layers, and scan for vulnerabilities. Follow Dockerfile best practices for production deployments.
+
+## Best Practices
+- Use specific base image tags (not `latest`)
+- Combine RUN commands to reduce layers
+- Use `.dockerignore` to exclude unnecessary files
+- Run as non-root user in production
+- Use health checks for container orchestration
